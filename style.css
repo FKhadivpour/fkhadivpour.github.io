@@ -1,0 +1,88 @@
+body {
+  font-family: 'Helvetica', sans-serif;
+}
+
+.content {
+    margin: 50px;
+}
+
+/* General Buttons */
+input[type=submit], input[type=button], button {
+#  width: 130px;
+ # height: 30px;
+ padding: 10px;
+ background: linear-gradient(to bottom, #4eb5e5 0%,#389ed5 100%); /* W3C */
+  border: none;
+  border-radius: 5px;
+  position: relative;
+  border-bottom: 4px solid #2b8bc6;
+  color: #fbfbfb;
+  font-weight: 500;
+  font-family: 'Helvetica', sans-serif;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+  font-size: 15px;
+  text-align: center;
+#  text-indent: 5px;
+  box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
+  cursor: pointer;
+
+/* Just for presentation */  
+#  display: block;
+#  margin: 0 auto;
+#  margin-bottom: 20px;
+}
+
+input[type=button][disabled], button[disabled] {
+#  width: 130px;
+#  height: 30px;
+  background: linear-gradient(to bottom, #1e85b5 0%,#187eb5 100%); /* W3C */
+  border: none;
+  border-radius: 5px;
+  position: relative;
+  border-bottom: 4px solid #2b8bc6;
+  color: #9b9b9b;
+  font-weight: 500;
+  font-family: 'Helvetica', sans-serif;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+  font-size: 15px;
+  text-align: center;
+  #  text-indent: 5px;
+  box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
+  cursor: pointer;
+
+/* Just for presentation */  
+#  display: block;
+#  margin: 0 auto;
+#  margin-bottom: 20px;
+}
+
+button:active {
+  box-shadow: 0px 2px 0px 0px rgba(0,0,0,.2);
+  top: 1px;
+}
+
+
+h1 {
+  font: 400 16px 'Helvetica';
+  text-transform: uppercase;
+  color: #999;
+  text-shadow: 1px 1px 1px #fff;
+  margin-bottom: 30px;
+} 
+
+
+
+  <style>
+    table, th, td {
+    border: 0.5px solid;
+    border-collapse: collapse;
+  }
+
+  table.center {
+    margin-left: auto; 
+    margin-right: auto;
+  }
+
+  p.groove {border-style: groove;}
+  
+  </style>
