@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import portrait from '../assets/portrait.jpg';
 import { site } from '../data/site';
 import { research } from '../data/research';
 import { work } from '../data/work';
@@ -45,7 +47,9 @@ const [before, after] = site.thesis.split(site.thesisAccent);
           </p>
         </div>
       </div>
-      <div></div>
+      <div class="portrait">
+        <Image src={portrait} alt="Faraz Khadivpour" widths={[320, 640]} sizes="320px" />
+      </div>
     </div>
   </section>
 

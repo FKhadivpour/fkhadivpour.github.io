@@ -12,7 +12,7 @@
 
   --gutter: 64px;
   --rhythm: 96px;
-  --measure: 65ch;
+  --measure: 74ch;
 
   --f-label: 10px;
   --f-eyebrow: 11px;
@@ -216,8 +216,18 @@ img {
 
 .about-grid {
   display: grid;
-  grid-template-columns: 58% 1fr;
-  gap: 64px;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 72px;
+  align-items: start;
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+  /* Sits with the prose, not the section label. */
+  margin-top: 46px;
 }
 
 /* ── rows (research + work) ───────────────────────────────────────── */
@@ -356,6 +366,11 @@ a.row:hover .meta {
   .about-grid {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+
+  .portrait img {
+    max-width: 240px;
+    margin-top: 40px;
   }
 
   .essay {
