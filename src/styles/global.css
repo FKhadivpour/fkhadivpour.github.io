@@ -275,7 +275,8 @@ img {
 }
 
 .row.entry .sub {
-  max-width: 68ch;
+  font-size: 13px;
+  max-width: 78ch;
   margin-top: 14px;
   color: var(--text-2);
   line-height: 1.85;

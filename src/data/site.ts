@@ -2,11 +2,11 @@ export const site = {
   name: 'Faraz Khadivpour',
   role: 'AI / ML Engineer',
   location: 'Vancouver, BC',
-  thesis: 'I work on the boundary between people and machines — making each legible to the other.',
+  thesis: 'I work on the boundary between people and machines, making each legible to the other.',
   /** The word accented in the hero. Must appear verbatim in `thesis`. */
   thesisAccent: 'legible',
   description:
-    'Faraz Khadivpour — AI / ML engineer working on the boundary between people and machines.',
+    'Faraz Khadivpour, AI / ML engineer working on the boundary between people and machines.',
 } as const;
 
 export type NavItem = { label: string; href: string };

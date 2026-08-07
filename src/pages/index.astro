@@ -10,7 +10,7 @@ import { work } from '../data/work';
 const [before, after] = site.thesis.split(site.thesisAccent);
 ---
 
-<Base title={`${site.name} — ${site.role}`}>
+<Base title={`${site.name} · ${site.role}`}>
   <section class="wrap hero">
     <p class="eyebrow">{site.role}</p>
     <h1 class="thesis">{before}<span class="accent">{site.thesisAccent}</span>{after}</h1>
@@ -23,23 +23,28 @@ const [before, after] = site.thesis.split(site.thesisAccent);
         <div class="prose">
           <p>
             A model produces an answer; a person has to decide whether to trust it. My
-            research proposed one way in — instead of asking which features mattered, ask
+            research proposed one way in: instead of asking which features mattered, ask
             which training examples were <span class="accent">responsible</span>. Inspect
             the process, not the output. It became a thesis and two papers.
           </p>
           <p>
             Then I went to industry. Now the work is putting AI in the hands of energy
-            engineers — people who have no use for a confident wrong answer.
+            engineers, people who have no use for a confident wrong answer.
           </p>
           <p>
             Which makes it production work more than modelling work. An inference service
-            other products depend on. A conversational assistant I designed and built into
-            one of them, so people can ask for what they need instead of learning where it
-            lives. Model choice and provider routing behind a versioned interface, so what's
-            underneath can change without anyone downstream noticing. Retrieval that returns
-            the right passage rather than a plausible one. Output validated before a human
-            ever sees it. Evaluation offline, quality monitoring online, latency and cost
-            tracked like any other budget. Prompts in version control, because they're code.
+            other products depend on. Model choice and provider routing behind a versioned
+            interface, so what's underneath can change without anyone downstream noticing.
+            Retrieval that returns the right passage rather than a plausible one. Output
+            validated before a human ever sees it. Evaluation offline, quality monitoring
+            online, latency and cost tracked like any other budget. Prompts in version
+            control, because they're code.
+          </p>
+          <p>
+            All of it in a startup, where you own a product rather than a ticket. I own the
+            platform and the conversational assistant inside it, from the argument about
+            what to build, through architecture and code review, to whatever happens after
+            it ships.
           </p>
           <p>
             None of that is glamorous. It's the difference between a model that works in a
@@ -64,7 +69,7 @@ const [before, after] = site.thesis.split(site.thesisAccent);
               <span class="body">
                 <span class="title">
                   {paper.title}
-                  {paper.note && <span style="color:var(--text-muted)"> — {paper.note}</span>}
+                  {paper.note && <span style="color:var(--text-muted)"> ({paper.note})</span>}
                 </span>
               </span>
               <span class="meta">
