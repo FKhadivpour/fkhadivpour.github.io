@@ -259,6 +259,18 @@ img {
   line-height: 1.6;
 }
 
+/* Work entries carry a paragraph rather than a one-line summary. */
+.row.entry {
+  padding-block: 26px;
+}
+
+.row.entry .sub {
+  max-width: 68ch;
+  margin-top: 14px;
+  color: var(--text-2);
+  line-height: 1.85;
+}
+
 .row .meta {
   font-size: var(--f-nav);
   color: var(--text-faint);

@@ -1,10 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
 import { research } from '../data/research';
-
-const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+import { work } from '../data/work';
 
 // Split the thesis so exactly one word carries the accent.
 const [before, after] = site.thesis.split(site.thesisAccent);
@@ -33,12 +31,13 @@ const [before, after] = site.thesis.split(site.thesisAccent);
           </p>
           <p>
             Which makes it production work more than modelling work. An inference service
-            other products depend on. Model choice and provider routing behind a versioned
-            interface, so what's underneath can change without anyone downstream noticing.
-            Retrieval that returns the right passage rather than a plausible one. Output
-            validated before a human ever sees it. Evaluation offline, quality monitoring
-            online, latency and cost tracked like any other budget. Prompts in version
-            control, because they're code.
+            other products depend on. A conversational assistant I designed and built into
+            one of them, so people can ask for what they need instead of learning where it
+            lives. Model choice and provider routing behind a versioned interface, so what's
+            underneath can change without anyone downstream noticing. Retrieval that returns
+            the right passage rather than a plausible one. Output validated before a human
+            ever sees it. Evaluation offline, quality monitoring online, latency and cost
+            tracked like any other budget. Prompts in version control, because they're code.
           </p>
           <p>
             None of that is glamorous. It's the difference between a model that works in a
@@ -78,15 +77,14 @@ const [before, after] = site.thesis.split(site.thesisAccent);
     <h2 class="label">Work</h2>
     <div class="rows">
       {
-        work.map((entry, i) => (
-          <a class="row" href={`/work/${entry.id}`}>
+        work.map((item, i) => (
+          <div class="row entry">
             <span class="num">{String(i + 1).padStart(2, '0')}</span>
             <span class="body">
-              <span class="title">{entry.data.title}</span>
-              <span class="sub">{entry.data.summary}</span>
+              <span class="title">{item.title}</span>
+              <p class="sub">{item.body}</p>
             </span>
-            <span class="meta">→</span>
-          </a>
+          </div>
         ))
       }
     </div>
