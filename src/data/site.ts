@@ -20,9 +20,10 @@ export const nav: NavItem[] = [
 
 export type ContactLink = { label: string; href: string };
 
-// Email intentionally absent until a personal address is chosen — a personal
-// site should not depend on a current employer's domain.
+// A personal address, deliberately not the employer domain, so the site
+// survives a change of job.
 export const contact: ContactLink[] = [
+  { label: 'email', href: 'mailto:farazkhadivpour@gmail.com' },
   { label: 'github', href: 'https://github.com/FKhadivpour' },
   { label: 'linkedin', href: 'https://ca.linkedin.com/in/farazkhadivpour' },
   { label: 'cv', href: '/cv.pdf' },
