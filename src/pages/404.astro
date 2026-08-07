@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base title={`Not found — ${site.name}`}>
+  <section class="wrap hero">
+    <p class="eyebrow">404</p>
+    <h1 class="thesis">Nothing here. The <span class="accent">page</span> was moved, or never existed.</h1>
+    <p style="margin-top:36px"><a class="back" href="/">← home</a></p>
+  </section>
+</Base>

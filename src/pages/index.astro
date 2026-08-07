@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+import { research } from '../data/research';
+
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+
+// Split the thesis so exactly one word carries the accent.
+const [before, after] = site.thesis.split(site.thesisAccent);
+---
+
+<Base title={`${site.name} — ${site.role}`}>
+  <section class="wrap hero">
+    <p class="eyebrow">{site.role}</p>
+    <h1 class="thesis">{before}<span class="accent">{site.thesisAccent}</span>{after}</h1>
+  </section>
+
+  <section id="about" class="wrap section">
+    <div class="about-grid">
+      <div>
+        <h2 class="label">About</h2>
+        <div class="prose">
+          <p>
+            A model produces an answer; a person has to decide whether to trust it. My
+            research proposed one way in — instead of asking which features mattered, ask
+            which training examples were <span class="accent">responsible</span>. Inspect
+            the process, not the output. It became a thesis and two papers.
+          </p>
+          <p>
+            Then I went to industry. Now the work is putting AI in the hands of energy
+            engineers — people who have no use for a confident wrong answer.
+          </p>
+          <p>
+            Which makes it production work more than modelling work. An inference service
+            other products depend on. Model choice and provider routing behind a versioned
+            interface, so what's underneath can change without anyone downstream noticing.
+            Retrieval that returns the right passage rather than a plausible one. Output
+            validated before a human ever sees it. Evaluation offline, quality monitoring
+            online, latency and cost tracked like any other budget. Prompts in version
+            control, because they're code.
+          </p>
+          <p>
+            None of that is glamorous. It's the difference between a model that works in a
+            notebook and one someone trusts at three in the morning.
+          </p>
+        </div>
+      </div>
+      <div></div>
+    </div>
+  </section>
+
+  <section id="research" class="wrap section">
+    <h2 class="label">Research</h2>
+    <div class="rows">
+      {
+        research.map((paper) => {
+          const Tag = paper.href ? 'a' : 'div';
+          return (
+            <Tag class="row" {...(paper.href ? { href: paper.href, rel: 'noopener' } : {})}>
+              <span class="body">
+                <span class="title">
+                  {paper.title}
+                  {paper.note && <span style="color:var(--text-muted)"> — {paper.note}</span>}
+                </span>
+              </span>
+              <span class="meta">
+                {paper.venue} · {paper.year}
+              </span>
+            </Tag>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section id="work" class="wrap section">
+    <h2 class="label">Work</h2>
+    <div class="rows">
+      {
+        work.map((entry, i) => (
+          <a class="row" href={`/work/${entry.id}`}>
+            <span class="num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="body">
+              <span class="title">{entry.data.title}</span>
+              <span class="sub">{entry.data.summary}</span>
+            </span>
+            <span class="meta">→</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Base>

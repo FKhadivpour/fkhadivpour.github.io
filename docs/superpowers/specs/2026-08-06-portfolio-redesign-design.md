@@ -101,14 +101,10 @@ making each legible to the other.
 
 ### About
 
-> I started as a civil and environmental engineer. The crossing happened inside that work —
-> a thesis on bioenergy that turned out to be a data problem — and what held me afterwards
-> was the mathematics and the code, not the plant.
->
 > A model produces an answer; a person has to decide whether to trust it. My research
 > proposed one way in — instead of asking which features mattered, ask which training
-> examples were responsible. Inspect the process, not the output. It became a second thesis
-> and two papers.
+> examples were responsible. Inspect the process, not the output. It became a thesis and
+> two papers.
 >
 > Then I went to industry. Now the work is putting AI in the hands of energy engineers —
 > people who have no use for a confident wrong answer.
@@ -274,7 +270,8 @@ instruction.
 | D11 | CV published unmodified | Faraz's decision, after the phone-number and product-name exposure was raised twice |
 | D12 | Environmental-engineering paper excluded | Different field; dilutes the thesis |
 | D13 | Photo not used in the design | Explicit instruction, reversed from an earlier direction |
-| D14 | About opens with the civil/environmental origin | Requested; placed first so the section runs chronologically. The switch is told through the bioenergy thesis that turned out to be a data problem rather than through the word "passion", which is the cliché the voice rules exist to avoid. "A second thesis" in the next paragraph disambiguates the two degrees and quietly signals both. |
+| D14 | Civil/environmental origin paragraph added, then removed | Drafted on request, then cut on review. About opens on the research paragraph. |
+| D15 | Fourth paragraph of §7 sets the essay measure via `.essay > *`, not the container | `.wrap` uses border-box padding; a `ch` max-width on the same element silently loses 2×gutter of measure. |
 
 ## 15. Required input before launch
 
