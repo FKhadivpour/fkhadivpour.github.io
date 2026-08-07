@@ -30,7 +30,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   </head>
   <body>
     <header class="wrap masthead">
-      <a href="/">{site.name.toLowerCase()}</a>
+      <a href="/">{site.name}</a>
       <nav>
         {nav.map((item) => <a href={item.href}>{item.label}</a>)}
       </nav>
