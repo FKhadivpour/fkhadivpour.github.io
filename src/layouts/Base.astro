@@ -78,15 +78,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
         var root = document.documentElement;
         if (!root.classList.contains('js')) return;
         try {
-          // Reveal each element once. Elements that arrive together stagger by 60 ms.
+          // When an element has arrived, drop its delay so hover responds at once.
+          var settle = function (el, delay) {
+            setTimeout(function () {
+              el.style.transitionDelay = '';
+              el.classList.add('done');
+            }, delay + 700);
+          };
+          // Reveal each element once. Elements that arrive together show up one
+          // after another, 90 ms apart (the ninth and later share the last slot).
           var reveal = new IntersectionObserver(
             function (entries) {
               var step = 0;
               entries.forEach(function (entry) {
                 if (!entry.isIntersecting) return;
-                entry.target.style.transitionDelay = Math.min(step, 4) * 60 + 'ms';
+                var delay = Math.min(step, 8) * 90;
+                entry.target.style.transitionDelay = delay + 'ms';
                 entry.target.classList.add('in');
                 reveal.unobserve(entry.target);
+                settle(entry.target, delay);
                 step += 1;
               });
             },

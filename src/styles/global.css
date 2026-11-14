@@ -2,27 +2,41 @@
 
 :root {
   --ground: #0a0a0b;
+  --surface: #111214;
+  --inset: #0b0c0d;
   --text: #e6e4de;
   --text-2: #b3b8bf;
   --text-muted: #8b9098;
   --text-faint: #5a5f66;
   --rule: #1f2226;
   --rule-faint: #16181b;
+  --rule-strong: #3a3f46;
   --accent: #e8a33d;
+
+  /* Boxes: a lit top edge and a deep shadow underneath; warmer when lifted. */
+  --shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.045), 0 1px 2px rgb(0 0 0 / 0.6),
+    0 16px 36px -18px #000;
+  --shadow-lift:
+    inset 0 1px 0 rgb(255 255 255 / 0.07), 0 2px 6px rgb(0 0 0 / 0.6),
+    0 28px 60px -24px #000, 0 22px 64px -34px rgb(232 163 61 / 0.3);
+  --radius: 12px;
 
   --gutter: 64px;
   --rhythm: 96px;
-  --measure: 74ch;
 
   --f-label: 10px;
   --f-eyebrow: 11px;
   --f-nav: 12px;
   --f-small: 12.5px;
   --f-body: 14px;
-  --f-item: 15.5px;
   --f-prose: 15px;
-  --f-hero: 25px;
-  --f-stat: 34px;
+  --f-lede: 16px;
+  --f-item: 17px;
+  --f-h2: 22px;
+  /* Grows with the window until the longest headline line fills the column. */
+  --f-hero: clamp(25px, calc((100vw - 128px) / 33), 34px);
+  --f-stat: 36px;
 
   color-scheme: dark;
 }
@@ -30,13 +44,19 @@
 @media (prefers-color-scheme: light) {
   :root {
     --ground: #faf9f7;
+    --surface: #ffffff;
+    --inset: #f6f4f0;
     --text: #14151a;
     --text-2: #40444b;
     --text-muted: #61666e;
     --text-faint: #85898f;
     --rule: #e0ded8;
     --rule-faint: #eeece7;
+    --rule-strong: #c4c1b8;
     --accent: #9a5a12;
+
+    --shadow: 0 1px 2px rgb(20 21 26 / 0.05), 0 14px 32px -18px rgb(20 21 26 / 0.2);
+    --shadow-lift: 0 2px 6px rgb(20 21 26 / 0.07), 0 26px 52px -22px rgb(20 21 26 / 0.3);
 
     color-scheme: light;
   }
@@ -118,12 +138,24 @@ img {
   padding-bottom: var(--rhythm);
 }
 
-.label {
-  font-size: var(--f-label);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  margin-bottom: 28px;
+/* Section heading: the name, then a hairline out to the edge of the column. */
+.heading {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  font-size: var(--f-h2);
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 30px;
+}
+
+.heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
 }
 
 .accent {
@@ -131,7 +163,7 @@ img {
 }
 
 .prose {
-  max-width: var(--measure);
+  font-size: var(--f-prose);
   color: var(--text-2);
 }
 
@@ -199,6 +231,14 @@ img {
 .masthead {
   background: var(--ground);
   border-bottom: 1px solid var(--rule-faint);
+}
+
+/* Where it can, the bar lets the page show through as it scrolls under. */
+@supports (backdrop-filter: blur(1px)) {
+  .masthead {
+    background: color-mix(in srgb, var(--ground) 78%, transparent);
+    backdrop-filter: blur(12px);
+  }
 }
 
 .masthead-inner {
@@ -292,9 +332,8 @@ img {
 
 .hero .thesis {
   font-size: var(--f-hero);
-  line-height: 1.62;
-  letter-spacing: -0.006em;
-  max-width: 34em;
+  line-height: 1.5;
+  letter-spacing: -0.012em;
   color: var(--text);
   font-weight: 400;
 }
@@ -305,10 +344,13 @@ img {
   text-wrap: balance;
 }
 
+/* The lede runs the full width of the page column, like everything below it. */
 .hero .lede {
   margin-top: 30px;
-  max-width: 68ch;
+  font-size: var(--f-lede);
+  line-height: 1.85;
   color: var(--text-2);
+  text-wrap: pretty;
 }
 
 .hero .actions {
@@ -323,20 +365,91 @@ img {
   color: var(--accent);
 }
 
-/* ── numbers ──────────────────────────────────────────────────────── */
+/* ── boxes ────────────────────────────────────────────────────────── */
 
-.stats {
+/* Every item on the page sits in the same box: a raised surface with a
+   hairline edge. `.boxes` lays them out one, two, three or four abreast, and
+   always across the full page column. */
+.boxes {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0 40px;
-  border-block: 1px solid var(--rule);
-  padding-block: 36px 38px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
 }
+
+.boxes.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* An odd one out takes the whole last line rather than half of it. */
+.boxes.two > :last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.boxes.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.boxes.four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.box {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 30px;
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s,
+    transform 0.25s;
+}
+
+/* Text inside a box. */
+.title {
+  font-size: var(--f-item);
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  color: var(--text);
+}
+
+.sub {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.meta {
+  font-size: var(--f-nav);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Small outlined tags: a job's stack, a skill group's items. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chips li {
+  font-size: var(--f-nav);
+  line-height: 1.5;
+  color: var(--text-2);
+  background: var(--inset);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 4px 11px;
+}
+
+/* ── numbers ──────────────────────────────────────────────────────── */
 
 .stat {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  padding: 26px 24px;
 }
 
 .figure {
@@ -351,7 +464,6 @@ img {
   font-size: var(--f-nav);
   line-height: 1.7;
   color: var(--text-muted);
-  max-width: 27ch;
 }
 
 /* ── about ────────────────────────────────────────────────────────── */
@@ -359,7 +471,7 @@ img {
 .about-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 72px;
+  gap: 64px;
   align-items: start;
 }
 
@@ -367,90 +479,20 @@ img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 2px;
-  /* Sits with the prose, not the section label. */
-  margin-top: 46px;
-}
-
-/* ── rows (research + work) ───────────────────────────────────────── */
-
-.rows {
-  border-top: 1px solid var(--rule);
-}
-
-.row {
-  border-bottom: 1px solid var(--rule);
-  display: flex;
-  gap: 26px;
-  align-items: baseline;
-  padding-block: 20px;
-}
-
-.row .num {
-  font-size: var(--f-nav);
-  color: var(--text-faint);
-  width: 22px;
-  flex-shrink: 0;
-}
-
-.row .body {
-  flex: 1;
-  min-width: 0;
-}
-
-.row .title {
-  font-size: var(--f-item);
-  color: var(--text);
-  line-height: 1.5;
-}
-
-.row .sub {
-  display: block;
-  font-size: var(--f-small);
-  color: var(--text-muted);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  /* Level with the first line of the prose. */
   margin-top: 7px;
-  line-height: 1.6;
-}
-
-/* Work entries carry a paragraph rather than a one-line summary. */
-.row.entry {
-  padding-block: 26px;
-}
-
-.row.entry .sub {
-  font-size: 13px;
-  max-width: 78ch;
-  margin-top: 14px;
-  color: var(--text-2);
-  line-height: 1.85;
-}
-
-.row .meta {
-  font-size: var(--f-nav);
-  color: var(--text-faint);
-  white-space: nowrap;
-}
-
-a.row {
-  transition: background-color 0.15s;
-}
-
-a.row:hover .title {
-  color: var(--accent);
-}
-
-a.row:hover .meta {
-  color: var(--text-muted);
 }
 
 /* ── experience ───────────────────────────────────────────────────── */
 
-.row.job {
+.job {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0 26px;
   align-items: baseline;
-  padding-block: 30px 32px;
 }
 
 .job .kicker {
@@ -464,23 +506,21 @@ a.row:hover .meta {
 
 .job .meta {
   grid-column: 2;
-  color: var(--text-muted);
 }
 
 .job .points {
   grid-column: 1 / -1;
-  margin-top: 18px;
+  margin-top: 20px;
 }
 
-.job .stack {
+.job .chips {
   grid-column: 1 / -1;
-  margin-top: 16px;
+  margin-top: 22px;
 }
 
 .points {
-  max-width: 88ch;
-  font-size: 13px;
-  line-height: 1.85;
+  font-size: var(--f-body);
+  line-height: 1.8;
   color: var(--text-2);
 }
 
@@ -504,52 +544,67 @@ a.row:hover .meta {
   background: var(--text-faint);
 }
 
-.stack {
-  font-size: var(--f-nav);
-  color: var(--text-muted);
-}
-
 /* ── selected work ────────────────────────────────────────────────── */
 
 .entry .kicker {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
+.entry .num {
+  margin-right: 14px;
+  color: var(--accent);
+}
+
+.entry .sub {
+  margin-top: 14px;
+  font-size: var(--f-body);
+  line-height: 1.85;
+  color: var(--text-2);
+}
+
+/* The harness principles: two columns of name over detail, ruled. */
 .principles {
-  max-width: 88ch;
-  margin-top: 20px;
-  border-top: 1px solid var(--rule-faint);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 40px;
+  margin-top: 22px;
+  border-top: 1px solid var(--rule);
 }
 
 .principles > div {
-  display: grid;
-  grid-template-columns: 190px minmax(0, 1fr);
-  gap: 20px;
-  align-items: baseline;
-  padding-block: 9px;
-  border-bottom: 1px solid var(--rule-faint);
+  padding-block: 14px;
+  border-bottom: 1px solid var(--rule);
 }
 
 .principles dt {
-  font-size: var(--f-small);
+  font-size: 13px;
+  line-height: 1.6;
   color: var(--text);
 }
 
 .principles dd {
+  margin-top: 3px;
   font-size: 13px;
   line-height: 1.7;
-  color: var(--text-2);
+  color: var(--text-muted);
 }
 
+/* The outcome closes the box, under a rule of its own. */
 .result {
   display: flex;
-  gap: 16px;
+  gap: 18px;
   align-items: baseline;
-  max-width: 100ch;
-  margin-top: 18px;
-  font-size: 13px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  font-size: var(--f-body);
   line-height: 1.7;
   color: var(--text);
+}
+
+.principles + .result {
+  border-top: 0;
+  padding-top: 0;
 }
 
 .result-label {
@@ -563,44 +618,72 @@ a.row:hover .meta {
 
 /* ── skills ───────────────────────────────────────────────────────── */
 
-.row.pair {
-  display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
-  gap: 26px;
-  padding-block: 18px;
+.skill .title {
+  margin-bottom: 18px;
 }
 
-.pair dt {
-  font-size: var(--f-body);
-  line-height: 1.7;
-  color: var(--text);
+/* ── education and research ───────────────────────────────────────── */
+
+.degree,
+.paper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.pair dd {
-  max-width: 88ch;
+.degree .school {
   font-size: 13px;
-  line-height: 1.85;
+  line-height: 1.7;
   color: var(--text-2);
 }
 
-/* ── research ─────────────────────────────────────────────────────── */
-
+/* Two columns of introduction above the papers. */
 .prose.intro {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 48px;
   margin-bottom: 36px;
+}
+
+.prose.intro p + p {
+  margin-top: 0;
+}
+
+/* A paper that can be opened says so, at the foot of its box. */
+.paper .more {
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: var(--f-nav);
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+
+.paper .title {
+  transition: color 0.15s;
+}
+
+a.paper:hover .title,
+a.paper:hover .more {
+  color: var(--accent);
 }
 
 /* ── contact ──────────────────────────────────────────────────────── */
 
+.contact-box {
+  padding: 40px 36px;
+}
+
 .contact-line {
-  max-width: 68ch;
+  font-size: var(--f-prose);
   color: var(--text-2);
 }
 
 .contact-email {
-  margin-top: 22px;
+  margin-top: 16px;
   font-size: var(--f-hero);
-  line-height: 1.5;
-  letter-spacing: -0.006em;
+  line-height: 1.4;
+  letter-spacing: -0.012em;
   overflow-wrap: anywhere;
 }
 
@@ -613,7 +696,7 @@ a.row:hover .meta {
 }
 
 .contact .actions {
-  margin-top: 26px;
+  margin-top: 28px;
 }
 
 /* ── essay ────────────────────────────────────────────────────────── */
@@ -669,25 +752,60 @@ a.row:hover .meta {
 
 /* ── responsive ───────────────────────────────────────────────────── */
 
+/* Four or three boxes abreast need room; below that they regroup. */
+@media (max-width: 1080px) {
+  .boxes.four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1000px) {
+  .boxes.three {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     --gutter: 24px;
-    --rhythm: 56px;
-    --f-hero: 21px;
-    --f-stat: 28px;
+    --rhythm: 64px;
+    --radius: 10px;
+    --f-hero: 22px;
+    --f-h2: 19px;
+    --f-item: 16px;
+    --f-lede: 15px;
+    --f-prose: 14.5px;
+    --f-stat: 24px;
   }
 
   .hero {
     padding-block: 64px 48px;
   }
 
-  .stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 30px 24px;
-    padding-block: 30px 32px;
+  .heading {
+    gap: 16px;
+    margin-bottom: 22px;
   }
 
-  .row.job {
+  .boxes {
+    gap: 12px;
+  }
+
+  .boxes.two {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .box {
+    padding: 22px 18px;
+  }
+
+  .stat {
+    gap: 8px;
+    padding: 18px 16px;
+  }
+
+  /* Place and dates drop under the title rather than squeezing it. */
+  .job {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -701,37 +819,26 @@ a.row:hover .meta {
     padding-left: 20px;
   }
 
-  .principles > div {
+  .principles {
     grid-template-columns: minmax(0, 1fr);
-    gap: 2px;
-  }
-
-  .row.pair {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 6px;
-  }
-
-  /* Venue and year drop under the title rather than squeezing it. */
-  .row {
-    flex-wrap: wrap;
-    row-gap: 6px;
-  }
-
-  .row > .body {
-    flex-basis: 100%;
-  }
-
-  .row.entry {
-    flex-wrap: nowrap;
-  }
-
-  .row.entry > .body {
-    flex-basis: 0;
   }
 
   .result {
     flex-direction: column;
     gap: 4px;
+  }
+
+  .prose.intro {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contact-box {
+    padding: 28px 18px;
+  }
+
+  /* The address stays on one line down to the narrowest phone. */
+  .contact-email {
+    font-size: clamp(14px, 4.6vw, 22px);
   }
 
   .actions {
@@ -745,7 +852,7 @@ a.row:hover .meta {
 
   .portrait img {
     max-width: 240px;
-    margin-top: 40px;
+    margin-top: 36px;
   }
 
   .essay {
@@ -757,10 +864,10 @@ a.row:hover .meta {
   }
 }
 
-/* The widest figure must still fit half a very narrow screen. */
+/* The widest figure must still fit its box on a very narrow screen. */
 @media (max-width: 360px) {
   :root {
-    --f-stat: 24px;
+    --f-stat: 20px;
   }
 
   .masthead nav {
@@ -784,9 +891,38 @@ a.row:hover .meta {
     transform 0.5s ease-out;
 }
 
+/* Boxes rise further and settle more slowly, so a line of them reads as one
+   box after another. */
+.js .box[data-reveal] {
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+
 .js [data-reveal].in {
   opacity: 1;
   transform: none;
+}
+
+/* Once it has arrived, a box answers the pointer at hover speed. */
+.js .box[data-reveal].done {
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s,
+    transform 0.25s;
+}
+
+/* A box lifts under the pointer. Not on touch screens, where hover sticks. */
+@media (hover: hover) {
+  .box:hover,
+  .js .box[data-reveal].in:hover {
+    border-color: var(--rule-strong);
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-3px);
+  }
 }
 
 /* Count-up: the real figure keeps its place in the layout while the running
@@ -818,6 +954,13 @@ a.row:hover .meta {
     position: static;
   }
 
+  .box,
+  .portrait img {
+    background: none;
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
   /* No fade either: a page printed mid-transition would come out half transparent. */
   .js [data-reveal] {
     opacity: 1 !important;
@@ -837,6 +980,10 @@ a.row:hover .meta {
 @media (prefers-reduced-motion: reduce) {
   @view-transition {
     navigation: none;
+  }
+
+  .box:hover {
+    transform: none;
   }
 
   *,

@@ -77,10 +77,10 @@ const person = {
   </section>
 
   <section class="wrap section">
-    <ul class="stats" aria-label="Key figures">
+    <ul class="stats boxes four" aria-label="Key figures">
       {
         stats.map((stat) => (
-          <li class="stat" data-reveal>
+          <li class="box stat" data-reveal>
             <span class="figure" data-count={stat.value} data-suffix={stat.suffix}>
               {formatNumber(stat.value) + stat.suffix}
             </span>
@@ -92,39 +92,37 @@ const person = {
   </section>
 
   <section id="about" class="wrap section">
+    <h2 class="heading" data-reveal>About</h2>
     <div class="about-grid">
-      <div>
-        <h2 class="label" data-reveal>About</h2>
-        <div class="prose">
-          <p data-reveal>
-            I work on the boundary between people and machines, making each
-            <span class="accent">legible</span> to the other. A model produces an answer; a
-            person has to decide whether to trust it. Everything I build is some version of
-            that problem.
-          </p>
-          <p data-reveal>
-            I have worked on it in three kinds of place. In research, at
-            <a href={links.amii} rel="noopener">Amii</a>, where an idea has to survive peer
-            review and a human study. In a regulated bank,
-            <a href={links.scotiabank} rel="noopener">Scotiabank</a>, where a model has to
-            survive governance. And in a startup,
-            <a href={links.sisa} rel="noopener">SISA Energy</a>, where it has to survive
-            production.
-          </p>
-          <p data-reveal>
-            Today I am the founding AI engineer at SISA Energy. I designed, built and run SISA
-            AI, the agentic service behind
-            <a href={links.collectflow} rel="noopener">CollectFlow</a>, and I work across the
-            whole stack to ship it: the agent and its harness, the Python services, the React
-            front end, the evaluation and the monitoring. I am also CollectFlow's product
-            owner, so the work starts with a conversation with a client and ends when the
-            feature is holding up in production.
-          </p>
-          <p data-reveal>
-            None of that is glamorous. It's the difference between a model that works in a
-            notebook and one someone trusts at three in the morning.
-          </p>
-        </div>
+      <div class="prose">
+        <p data-reveal>
+          I work on the boundary between people and machines, making each
+          <span class="accent">legible</span> to the other. A model produces an answer; a
+          person has to decide whether to trust it. Everything I build is some version of
+          that problem.
+        </p>
+        <p data-reveal>
+          I have worked on it in three kinds of place. In research, at
+          <a href={links.amii} rel="noopener">Amii</a>, where an idea has to survive peer
+          review and a human study. In a regulated bank,
+          <a href={links.scotiabank} rel="noopener">Scotiabank</a>, where a model has to
+          survive governance. And in a startup,
+          <a href={links.sisa} rel="noopener">SISA Energy</a>, where it has to survive
+          production.
+        </p>
+        <p data-reveal>
+          Today I am the founding AI engineer at SISA Energy. I designed, built and run SISA
+          AI, the agentic service behind
+          <a href={links.collectflow} rel="noopener">CollectFlow</a>, and I work across the
+          whole stack to ship it: the agent and its harness, the Python services, the React
+          front end, the evaluation and the monitoring. I am also CollectFlow's product
+          owner, so the work starts with a conversation with a client and ends when the
+          feature is holding up in production.
+        </p>
+        <p data-reveal>
+          None of that is glamorous. It's the difference between a model that works in a
+          notebook and one someone trusts at three in the morning.
+        </p>
       </div>
       <div class="portrait" data-reveal>
         <Image src={portrait} alt="Faraz Khadivpour" widths={[320, 640]} sizes="320px" />
@@ -133,11 +131,11 @@ const person = {
   </section>
 
   <section id="experience" class="wrap section">
-    <h2 class="label" data-reveal>Experience</h2>
-    <div class="rows">
+    <h2 class="heading" data-reveal>Experience</h2>
+    <div class="boxes">
       {
         experience.map((job) => (
-          <article class="row job" data-reveal>
+          <article class="box job" data-reveal>
             <p class="kicker">{job.env}</p>
             <h3 class="title">
               {job.role} · <a href={job.href} rel="noopener">{job.company}</a>
@@ -151,7 +149,11 @@ const person = {
                 <li set:html={point} />
               ))}
             </ul>
-            <p class="stack">{job.stack.join(' · ')}</p>
+            <ul class="chips" aria-label="Stack">
+              {job.stack.map((tool) => (
+                <li>{tool}</li>
+              ))}
+            </ul>
           </article>
         ))
       }
@@ -159,31 +161,31 @@ const person = {
   </section>
 
   <section id="work" class="wrap section">
-    <h2 class="label" data-reveal>Selected work</h2>
-    <div class="rows">
+    <h2 class="heading" data-reveal>Selected work</h2>
+    <div class="boxes">
       {
         work.map((item, i) => (
-          <article class="row entry" data-reveal>
-            <span class="num">{String(i + 1).padStart(2, '0')}</span>
-            <div class="body">
-              <p class="kicker">{item.kicker}</p>
-              <h3 class="title">{item.title}</h3>
-              <p class="sub">{item.body}</p>
-              {item.principles && (
-                <dl class="principles">
-                  {item.principles.map((principle) => (
-                    <div>
-                      <dt>{principle.name}</dt>
-                      <dd>{principle.detail}</dd>
-                    </div>
-                  ))}
-                </dl>
-              )}
-              <p class="result">
-                <span class="result-label">{item.resultLabel}</span>
-                {item.result}
-              </p>
-            </div>
+          <article class="box entry" data-reveal>
+            <p class="kicker">
+              <span class="num">{String(i + 1).padStart(2, '0')}</span>
+              {item.kicker}
+            </p>
+            <h3 class="title">{item.title}</h3>
+            <p class="sub">{item.body}</p>
+            {item.principles && (
+              <dl class="principles">
+                {item.principles.map((principle) => (
+                  <div>
+                    <dt>{principle.name}</dt>
+                    <dd>{principle.detail}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+            <p class="result">
+              <span class="result-label">{item.resultLabel}</span>
+              {item.result}
+            </p>
           </article>
         ))
       }
@@ -191,41 +193,41 @@ const person = {
   </section>
 
   <section id="skills" class="wrap section">
-    <h2 class="label" data-reveal>Skills</h2>
-    <dl class="rows">
+    <h2 class="heading" data-reveal>Skills</h2>
+    <div class="boxes two">
       {
         skills.map((group) => (
-          <div class="row pair" data-reveal>
-            <dt>{group.group}</dt>
-            <dd>{group.items.join(' · ')}</dd>
-          </div>
+          <article class="box skill" data-reveal>
+            <h3 class="title">{group.group}</h3>
+            <ul class="chips">
+              {group.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </article>
         ))
       }
-    </dl>
+    </div>
   </section>
 
   <section id="education" class="wrap section">
-    <h2 class="label" data-reveal>Education</h2>
-    <div class="rows">
+    <h2 class="heading" data-reveal>Education</h2>
+    <div class="boxes three">
       {
         education.map((degree) => (
-          <div class="row" data-reveal>
-            <span class="body">
-              <span class="title">{degree.degree}</span>
-              <span class="sub">
-                {degree.school}
-                {degree.note && ` · ${degree.note}`}
-              </span>
-            </span>
-            <span class="meta">{degree.years}</span>
-          </div>
+          <article class="box degree" data-reveal>
+            <p class="kicker">{degree.years}</p>
+            <h3 class="title">{degree.degree}</h3>
+            <p class="school">{degree.school}</p>
+            {degree.note && <p class="sub">{degree.note}</p>}
+          </article>
         ))
       }
     </div>
   </section>
 
   <section id="research" class="wrap section">
-    <h2 class="label" data-reveal>Research</h2>
+    <h2 class="heading" data-reveal>Research</h2>
     <div class="prose intro">
       <p data-reveal>
         Most explainability asks which parts of an input a model looked at. Responsibility
@@ -238,25 +240,24 @@ const person = {
         over baseline approaches.
       </p>
     </div>
-    <div class="rows">
+    <div class="boxes three">
       {
         research.map((paper) => {
-          const Tag = paper.href ? 'a' : 'div';
+          const Tag = paper.href ? 'a' : 'article';
           return (
             <Tag
-              class="row"
+              class="box paper"
               data-reveal
               {...(paper.href ? { href: paper.href, rel: 'noopener' } : {})}
             >
-              <span class="body">
-                <span class="title">
-                  {paper.title}
-                  {paper.note && <span class="note"> ({paper.note})</span>}
-                </span>
-              </span>
-              <span class="meta">
+              <span class="kicker">
                 {paper.venue} · {paper.year}
               </span>
+              <span class="title">
+                {paper.title}
+                {paper.note && <span class="note"> ({paper.note})</span>}
+              </span>
+              {paper.href && <span class="more">read the paper →</span>}
             </Tag>
           );
         })
@@ -265,18 +266,20 @@ const person = {
   </section>
 
   <section id="contact" class="wrap section contact">
-    <h2 class="label" data-reveal>Contact</h2>
-    <p class="contact-line" data-reveal>
-      Always open to connecting with people working on AI systems. Email is the fastest way to
-      reach me.
-    </p>
-    <p class="contact-email" data-reveal>
-      <a href={links.mailto}>{site.email}</a>
-    </p>
-    <p class="actions" data-reveal>
-      <a href={links.linkedin} rel="me noopener">linkedin →</a>
-      <a href={links.github} rel="me noopener">github →</a>
-      <a href={links.cv}>cv →</a>
-    </p>
+    <h2 class="heading" data-reveal>Contact</h2>
+    <div class="box contact-box" data-reveal>
+      <p class="contact-line">
+        Always open to connecting with people working on AI systems. Email is the fastest way
+        to reach me.
+      </p>
+      <p class="contact-email">
+        <a href={links.mailto}>{site.email}</a>
+      </p>
+      <p class="actions">
+        <a href={links.linkedin} rel="me noopener">linkedin →</a>
+        <a href={links.github} rel="me noopener">github →</a>
+        <a href={links.cv}>cv →</a>
+      </p>
+    </div>
   </section>
 </Base>

@@ -1,6 +1,6 @@
 # Recruiter-legible content: design
 
-**Date:** 2026-11-13 (revision 3: stats strip reordered by Faraz)
+**Date:** 2026-11-13 (revision 4: boxes, larger headings and one page column, asked for by Faraz)
 **Repo:** `FKhadivpour/fkhadivpour.github.io`, served at `https://farazkhadivpour.me`
 **Status:** built, reviewed by Faraz and published
 **Source of facts:** `public/cv.pdf` (the CV dated November 2026). Nothing on the page may claim
@@ -517,6 +517,30 @@ with this change.
 - On phones every row stacks its year or venue under the title.
 - The running count is drawn over the real figure, so the HTML always holds the final value.
 - Print turns transitions off as well as forcing everything visible.
+
+### Revision 4: boxes, larger headings, one column
+
+Asked for by Faraz after the first version was live. It replaces the "existing system only"
+rule of section 7 where the two disagree; type, colour tokens and copy are unchanged.
+
+- **One column.** Every block in every section runs the full width of the page column: the
+  hero lede, the lists inside boxes, the About text beside the portrait, the contact block.
+  No text block has its own narrower measure any more.
+- **Headings.** The hero headline grows with the window, up to 34 px, until its longest line
+  fills the column. Section names are 22 px headings followed by a hairline out to the edge of
+  the column, in place of the 10 px labels. Box titles are 17 px and the lede 16 px.
+- **Boxes.** Stats, experience, selected work, skills, education, research and contact all use
+  one box: a raised surface (`--surface`), a hairline edge, a 12 px radius and a shadow. Ruled
+  rows are gone. Skills are two boxes abreast, education and research three, stats four.
+- **Inside the boxes.** A job's stack and a skill group's items are small tags. A work entry's
+  number sits in its kicker line, in the accent colour; the harness principles are a
+  two-column ruled list; the result closes the box under its own rule. A paper that can be
+  opened says "read the paper" at the foot of its box.
+- **Motion.** Boxes that arrive together show up one after another, 90 ms apart. On a device
+  with a pointer a box lifts 3 px on hover. Both are off under reduced motion, and the page is
+  still complete without JavaScript and in print.
+- The accent now also marks the four work numbers and warms the shadow of a lifted box; the two
+  accented words in the copy are unchanged.
 
 ## 12. Left to the builder
 
