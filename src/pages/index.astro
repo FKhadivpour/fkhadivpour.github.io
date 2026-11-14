@@ -2,74 +2,256 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import portrait from '../assets/portrait.jpg';
-import { site } from '../data/site';
-import { research } from '../data/research';
+import { site, links } from '../data/site';
+import { stats } from '../data/stats';
+import { experience } from '../data/experience';
 import { work } from '../data/work';
+import { skills } from '../data/skills';
+import { education } from '../data/education';
+import { research } from '../data/research';
 
-// Split the thesis so exactly one word carries the accent.
-const [before, after] = site.thesis.split(site.thesisAccent);
+const formatNumber = (n: number) => n.toLocaleString('en-US');
+
+// Structured data for search engines. No phone number: that stays in the CV.
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  url: Astro.site?.href,
+  jobTitle: 'Founding AI Engineer',
+  description: site.description,
+  worksFor: { '@type': 'Organization', name: 'SISA Energy', url: links.sisa },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'University of Alberta' },
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Vancouver',
+    addressRegion: 'BC',
+    addressCountry: 'CA',
+  },
+  sameAs: [links.linkedin, links.github],
+};
 ---
 
 <Base title={`${site.name} · ${site.role}`}>
+  <script is:inline type="application/ld+json" slot="head" set:html={JSON.stringify(person)} />
+
   <section class="wrap hero">
-    <p class="eyebrow">{site.role}</p>
-    <h1 class="thesis">{before}<span class="accent">{site.thesisAccent}</span>{after}</h1>
+    <p class="eyebrow" data-reveal>{site.role} · {site.location}</p>
+    <h1 class="thesis" data-reveal>
+      {
+        site.headline.map((line) => {
+          // Split the line so exactly one word carries the accent.
+          const [before, after] = line.split(site.headlineAccent);
+          return (
+            <>
+              <span class="line">
+                {after === undefined ? (
+                  line
+                ) : (
+                  <>
+                    {before}
+                    <span class="accent">{site.headlineAccent}</span>
+                    {after}
+                  </>
+                )}
+              </span>{' '}
+            </>
+          );
+        })
+      }
+    </h1>
+    <p class="lede" data-reveal>
+      I'm Faraz, founding AI engineer at <a href={links.sisa} rel="noopener">SISA Energy</a>,
+      where I designed, built and run SISA AI, the agentic service behind
+      <a href={links.collectflow} rel="noopener">CollectFlow</a>. I have worked at research pace
+      at <a href={links.amii} rel="noopener">Amii</a>, at enterprise scale at
+      <a href={links.scotiabank} rel="noopener">Scotiabank</a> and at startup speed, across AI
+      engineering, machine learning and full-stack software.
+    </p>
+    <p class="actions" data-reveal>
+      <a href={links.mailto}>get in touch →</a>
+      <a href={links.linkedin} rel="me noopener">linkedin →</a>
+      <a href={links.github} rel="me noopener">github →</a>
+      <a href={links.cv}>cv →</a>
+    </p>
+  </section>
+
+  <section class="wrap section">
+    <ul class="stats" aria-label="Key figures">
+      {
+        stats.map((stat) => (
+          <li class="stat" data-reveal>
+            <span class="figure" data-count={stat.value} data-suffix={stat.suffix}>
+              {formatNumber(stat.value) + stat.suffix}
+            </span>
+            <span class="caption">{stat.caption}</span>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <section id="about" class="wrap section">
     <div class="about-grid">
       <div>
-        <h2 class="label">About</h2>
+        <h2 class="label" data-reveal>About</h2>
         <div class="prose">
-          <p>
-            A model produces an answer; a person has to decide whether to trust it. My
-            research proposed one way in: instead of asking which features mattered, ask
-            which training examples were <span class="accent">responsible</span>. Inspect
-            the process, not the output. It became a thesis and two papers.
+          <p data-reveal>
+            I work on the boundary between people and machines, making each
+            <span class="accent">legible</span> to the other. A model produces an answer; a
+            person has to decide whether to trust it. Everything I build is some version of
+            that problem.
           </p>
-          <p>
-            Then I went to industry. Now the work is putting AI in the hands of energy
-            engineers, people who have no use for a confident wrong answer.
+          <p data-reveal>
+            I have worked on it in three kinds of place. In research, at
+            <a href={links.amii} rel="noopener">Amii</a>, where an idea has to survive peer
+            review and a human study. In a regulated bank,
+            <a href={links.scotiabank} rel="noopener">Scotiabank</a>, where a model has to
+            survive governance. And in a startup,
+            <a href={links.sisa} rel="noopener">SISA Energy</a>, where it has to survive
+            production.
           </p>
-          <p>
-            Which makes it production work more than modelling work. An inference service
-            other products depend on. Model choice and provider routing behind a versioned
-            interface, so what's underneath can change without anyone downstream noticing.
-            Retrieval that returns the right passage rather than a plausible one. Output
-            validated before a human ever sees it. Evaluation offline, quality monitoring
-            online, latency and cost tracked like any other budget. Prompts in version
-            control, because they're code.
+          <p data-reveal>
+            Today I am the founding AI engineer at SISA Energy. I designed, built and run SISA
+            AI, the agentic service behind
+            <a href={links.collectflow} rel="noopener">CollectFlow</a>, and I work across the
+            whole stack to ship it: the agent and its harness, the Python services, the React
+            front end, the evaluation and the monitoring. I am also CollectFlow's product
+            owner, so the work starts with a conversation with a client and ends when the
+            feature is holding up in production.
           </p>
-          <p>
-            All of it in a startup, where you own a product rather than a ticket. I own the
-            platform and the conversational assistant inside it, from the argument about
-            what to build, through architecture and code review, to whatever happens after
-            it ships.
-          </p>
-          <p>
+          <p data-reveal>
             None of that is glamorous. It's the difference between a model that works in a
             notebook and one someone trusts at three in the morning.
           </p>
         </div>
       </div>
-      <div class="portrait">
+      <div class="portrait" data-reveal>
         <Image src={portrait} alt="Faraz Khadivpour" widths={[320, 640]} sizes="320px" />
       </div>
     </div>
   </section>
 
+  <section id="experience" class="wrap section">
+    <h2 class="label" data-reveal>Experience</h2>
+    <div class="rows">
+      {
+        experience.map((job) => (
+          <article class="row job" data-reveal>
+            <p class="kicker">{job.env}</p>
+            <h3 class="title">
+              {job.role} · <a href={job.href} rel="noopener">{job.company}</a>
+              {job.note && <span class="note">({job.note})</span>}
+            </h3>
+            <p class="meta">
+              {job.location} · {job.dates}
+            </p>
+            <ul class="points">
+              {job.points.map((point) => (
+                <li set:html={point} />
+              ))}
+            </ul>
+            <p class="stack">{job.stack.join(' · ')}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="work" class="wrap section">
+    <h2 class="label" data-reveal>Selected work</h2>
+    <div class="rows">
+      {
+        work.map((item, i) => (
+          <article class="row entry" data-reveal>
+            <span class="num">{String(i + 1).padStart(2, '0')}</span>
+            <div class="body">
+              <p class="kicker">{item.kicker}</p>
+              <h3 class="title">{item.title}</h3>
+              <p class="sub">{item.body}</p>
+              {item.principles && (
+                <dl class="principles">
+                  {item.principles.map((principle) => (
+                    <div>
+                      <dt>{principle.name}</dt>
+                      <dd>{principle.detail}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+              <p class="result">
+                <span class="result-label">{item.resultLabel}</span>
+                {item.result}
+              </p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="skills" class="wrap section">
+    <h2 class="label" data-reveal>Skills</h2>
+    <dl class="rows">
+      {
+        skills.map((group) => (
+          <div class="row pair" data-reveal>
+            <dt>{group.group}</dt>
+            <dd>{group.items.join(' · ')}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section id="education" class="wrap section">
+    <h2 class="label" data-reveal>Education</h2>
+    <div class="rows">
+      {
+        education.map((degree) => (
+          <div class="row" data-reveal>
+            <span class="body">
+              <span class="title">{degree.degree}</span>
+              <span class="sub">
+                {degree.school}
+                {degree.note && ` · ${degree.note}`}
+              </span>
+            </span>
+            <span class="meta">{degree.years}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
   <section id="research" class="wrap section">
-    <h2 class="label">Research</h2>
+    <h2 class="label" data-reveal>Research</h2>
+    <div class="prose intro">
+      <p data-reveal>
+        Most explainability asks which parts of an input a model looked at. Responsibility
+        asks which training examples were responsible for the decision. What comes back is not
+        a heatmap but a precedent: this is classified this way because of these forty images.
+      </p>
+      <p data-reveal>
+        The method improved interpretability by 5% on image classification and 20% on text
+        classification, and a 300-participant human evaluation study showed a 30% preference
+        over baseline approaches.
+      </p>
+    </div>
     <div class="rows">
       {
         research.map((paper) => {
           const Tag = paper.href ? 'a' : 'div';
           return (
-            <Tag class="row" {...(paper.href ? { href: paper.href, rel: 'noopener' } : {})}>
+            <Tag
+              class="row"
+              data-reveal
+              {...(paper.href ? { href: paper.href, rel: 'noopener' } : {})}
+            >
               <span class="body">
                 <span class="title">
                   {paper.title}
-                  {paper.note && <span style="color:var(--text-muted)"> ({paper.note})</span>}
+                  {paper.note && <span class="note"> ({paper.note})</span>}
                 </span>
               </span>
               <span class="meta">
@@ -82,20 +264,19 @@ const [before, after] = site.thesis.split(site.thesisAccent);
     </div>
   </section>
 
-  <section id="work" class="wrap section">
-    <h2 class="label">Work</h2>
-    <div class="rows">
-      {
-        work.map((item, i) => (
-          <div class="row entry">
-            <span class="num">{String(i + 1).padStart(2, '0')}</span>
-            <span class="body">
-              <span class="title">{item.title}</span>
-              <p class="sub">{item.body}</p>
-            </span>
-          </div>
-        ))
-      }
-    </div>
+  <section id="contact" class="wrap section contact">
+    <h2 class="label" data-reveal>Contact</h2>
+    <p class="contact-line" data-reveal>
+      Always open to connecting with people working on AI systems. Email is the fastest way to
+      reach me.
+    </p>
+    <p class="contact-email" data-reveal>
+      <a href={links.mailto}>{site.email}</a>
+    </p>
+    <p class="actions" data-reveal>
+      <a href={links.linkedin} rel="me noopener">linkedin →</a>
+      <a href={links.github} rel="me noopener">github →</a>
+      <a href={links.cv}>cv →</a>
+    </p>
   </section>
 </Base>

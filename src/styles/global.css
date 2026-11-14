@@ -22,6 +22,7 @@
   --f-item: 15.5px;
   --f-prose: 15px;
   --f-hero: 25px;
+  --f-stat: 34px;
 
   color-scheme: dark;
 }
@@ -69,8 +70,15 @@ h2,
 h3,
 p,
 ul,
-ol {
+ol,
+dl,
+dd {
   margin: 0;
+}
+
+h3 {
+  font-size: inherit;
+  font-weight: 400;
 }
 
 ul {
@@ -131,9 +139,69 @@ img {
   margin-top: 26px;
 }
 
+/* Small uppercase line above a title: the kind of place, or the kind of work. */
+.kicker {
+  font-size: var(--f-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.note {
+  font-size: var(--f-small);
+  color: var(--text-muted);
+}
+
+/* Links inside running text: primary colour on a hairline. */
+.prose a,
+.lede a,
+.points a,
+.job .title a {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--text-faint);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition:
+    color 0.15s,
+    text-decoration-color 0.15s;
+}
+
+.prose a:hover,
+.lede a:hover,
+.points a:hover,
+.job .title a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* A row of arrow links: hero actions and the contact block. */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  font-size: var(--f-nav);
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.actions a {
+  transition: color 0.15s;
+}
+
+.actions a:hover {
+  color: var(--accent);
+}
+
 /* ── header / footer ──────────────────────────────────────────────── */
 
 .masthead {
+  background: var(--ground);
+  border-bottom: 1px solid var(--rule-faint);
+}
+
+.masthead-inner {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -143,7 +211,25 @@ img {
   letter-spacing: 0.05em;
   color: var(--text-muted);
   padding-block: 30px;
-  border-bottom: 1px solid var(--rule-faint);
+}
+
+/* The bar follows the reader on wide screens only; on a phone it would cost
+   two lines of every screen. */
+@media (min-width: 769px) {
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .masthead-inner {
+    padding-block: 22px;
+  }
+
+  /* Anchored sections stop below the bar, not under it. */
+  [id] {
+    scroll-margin-top: 104px;
+  }
 }
 
 .masthead a {
@@ -152,7 +238,8 @@ img {
 
 .masthead nav {
   display: flex;
-  gap: 26px;
+  flex-wrap: wrap;
+  gap: 4px 26px;
 }
 
 .masthead nav a {
@@ -192,7 +279,7 @@ img {
 /* ── hero ─────────────────────────────────────────────────────────── */
 
 .hero {
-  padding-block: 104px 92px;
+  padding-block: 104px 72px;
 }
 
 .hero .eyebrow {
@@ -207,9 +294,64 @@ img {
   font-size: var(--f-hero);
   line-height: 1.62;
   letter-spacing: -0.006em;
-  max-width: 23em;
+  max-width: 34em;
   color: var(--text);
   font-weight: 400;
+}
+
+/* Each headline entry starts its own line, wrapped evenly when it has to. */
+.hero .thesis .line {
+  display: block;
+  text-wrap: balance;
+}
+
+.hero .lede {
+  margin-top: 30px;
+  max-width: 68ch;
+  color: var(--text-2);
+}
+
+.hero .actions {
+  margin-top: 34px;
+}
+
+.hero .actions a:first-child {
+  color: var(--text);
+}
+
+.hero .actions a:first-child:hover {
+  color: var(--accent);
+}
+
+/* ── numbers ──────────────────────────────────────────────────────── */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0 40px;
+  border-block: 1px solid var(--rule);
+  padding-block: 36px 38px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.figure {
+  font-size: var(--f-stat);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.caption {
+  font-size: var(--f-nav);
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 27ch;
 }
 
 /* ── about ────────────────────────────────────────────────────────── */
@@ -253,6 +395,7 @@ img {
 
 .row .body {
   flex: 1;
+  min-width: 0;
 }
 
 .row .title {
@@ -298,6 +441,179 @@ a.row:hover .title {
 
 a.row:hover .meta {
   color: var(--text-muted);
+}
+
+/* ── experience ───────────────────────────────────────────────────── */
+
+.row.job {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 26px;
+  align-items: baseline;
+  padding-block: 30px 32px;
+}
+
+.job .kicker {
+  grid-column: 1 / -1;
+  margin-bottom: 10px;
+}
+
+.job .title {
+  grid-column: 1;
+}
+
+.job .meta {
+  grid-column: 2;
+  color: var(--text-muted);
+}
+
+.job .points {
+  grid-column: 1 / -1;
+  margin-top: 18px;
+}
+
+.job .stack {
+  grid-column: 1 / -1;
+  margin-top: 16px;
+}
+
+.points {
+  max-width: 88ch;
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--text-2);
+}
+
+.points li {
+  position: relative;
+  padding-left: 24px;
+}
+
+.points li + li {
+  margin-top: 8px;
+}
+
+/* A small square rather than a bullet glyph. */
+.points li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0.8em;
+  width: 4px;
+  height: 4px;
+  background: var(--text-faint);
+}
+
+.stack {
+  font-size: var(--f-nav);
+  color: var(--text-muted);
+}
+
+/* ── selected work ────────────────────────────────────────────────── */
+
+.entry .kicker {
+  margin-bottom: 8px;
+}
+
+.principles {
+  max-width: 88ch;
+  margin-top: 20px;
+  border-top: 1px solid var(--rule-faint);
+}
+
+.principles > div {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 20px;
+  align-items: baseline;
+  padding-block: 9px;
+  border-bottom: 1px solid var(--rule-faint);
+}
+
+.principles dt {
+  font-size: var(--f-small);
+  color: var(--text);
+}
+
+.principles dd {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+.result {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  max-width: 100ch;
+  margin-top: 18px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.result-label {
+  flex-shrink: 0;
+  width: 56px;
+  font-size: var(--f-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── skills ───────────────────────────────────────────────────────── */
+
+.row.pair {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 26px;
+  padding-block: 18px;
+}
+
+.pair dt {
+  font-size: var(--f-body);
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.pair dd {
+  max-width: 88ch;
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--text-2);
+}
+
+/* ── research ─────────────────────────────────────────────────────── */
+
+.prose.intro {
+  margin-bottom: 36px;
+}
+
+/* ── contact ──────────────────────────────────────────────────────── */
+
+.contact-line {
+  max-width: 68ch;
+  color: var(--text-2);
+}
+
+.contact-email {
+  margin-top: 22px;
+  font-size: var(--f-hero);
+  line-height: 1.5;
+  letter-spacing: -0.006em;
+  overflow-wrap: anywhere;
+}
+
+.contact-email a {
+  transition: color 0.15s;
+}
+
+.contact-email a:hover {
+  color: var(--accent);
+}
+
+.contact .actions {
+  margin-top: 26px;
 }
 
 /* ── essay ────────────────────────────────────────────────────────── */
@@ -358,10 +674,68 @@ a.row:hover .meta {
     --gutter: 24px;
     --rhythm: 56px;
     --f-hero: 21px;
+    --f-stat: 28px;
   }
 
   .hero {
-    padding-block: 64px 56px;
+    padding-block: 64px 48px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px 24px;
+    padding-block: 30px 32px;
+  }
+
+  .row.job {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .job .meta {
+    grid-column: 1;
+    margin-top: 6px;
+    white-space: normal;
+  }
+
+  .points li {
+    padding-left: 20px;
+  }
+
+  .principles > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  .row.pair {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  /* Venue and year drop under the title rather than squeezing it. */
+  .row {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  .row > .body {
+    flex-basis: 100%;
+  }
+
+  .row.entry {
+    flex-wrap: nowrap;
+  }
+
+  .row.entry > .body {
+    flex-basis: 0;
+  }
+
+  .result {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .actions {
+    column-gap: 18px;
   }
 
   .about-grid {
@@ -379,7 +753,18 @@ a.row:hover .meta {
   }
 
   .masthead nav {
-    gap: 18px;
+    column-gap: 18px;
+  }
+}
+
+/* The widest figure must still fit half a very narrow screen. */
+@media (max-width: 360px) {
+  :root {
+    --f-stat: 24px;
+  }
+
+  .masthead nav {
+    column-gap: 10px;
   }
 }
 
@@ -387,6 +772,66 @@ a.row:hover .meta {
 
 @view-transition {
   navigation: auto;
+}
+
+/* Reveal on scroll. The hidden state exists only under html.js, which the head
+   script sets when it can also undo it, so the page is complete without it. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.5s ease-out,
+    transform 0.5s ease-out;
+}
+
+.js [data-reveal].in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Count-up: the real figure keeps its place in the layout while the running
+   number is drawn over it. */
+.figure {
+  position: relative;
+}
+
+.js .figure[data-shown] {
+  color: transparent;
+}
+
+.js .figure[data-shown]::after {
+  content: attr(data-shown);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media print {
+  .masthead {
+    position: static;
+  }
+
+  /* No fade either: a page printed mid-transition would come out half transparent. */
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .js .figure[data-shown] {
+    color: var(--text);
+  }
+
+  .js .figure[data-shown]::after {
+    content: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

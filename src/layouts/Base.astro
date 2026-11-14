@@ -27,13 +27,30 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <slot name="head" />
+    <script is:inline>
+      // Motion gate. The page is complete without JavaScript; the hidden pre-reveal
+      // state in global.css applies only under html.js, and only when it can be undone.
+      (function () {
+        var root = document.documentElement;
+        if (!window.IntersectionObserver || !window.matchMedia) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        root.classList.add('js');
+        // If the script at the end of the body never takes over, show everything.
+        setTimeout(function () {
+          if (!window.__motion) root.classList.remove('js');
+        }, 3000);
+      })();
+    </script>
   </head>
   <body>
-    <header class="wrap masthead">
-      <a href="/">{site.name}</a>
-      <nav>
-        {nav.map((item) => <a href={item.href}>{item.label}</a>)}
-      </nav>
+    <header class="masthead">
+      <div class="wrap masthead-inner">
+        <a href="/">{site.name}</a>
+        <nav>
+          {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        </nav>
+      </div>
     </header>
 
     <main>
@@ -54,5 +71,79 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
         }
       </ul>
     </footer>
+
+    <script is:inline>
+      // Scroll reveal and stat count-up. Progressive enhancement only.
+      (function () {
+        var root = document.documentElement;
+        if (!root.classList.contains('js')) return;
+        try {
+          // Reveal each element once. Elements that arrive together stagger by 60 ms.
+          var reveal = new IntersectionObserver(
+            function (entries) {
+              var step = 0;
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                entry.target.style.transitionDelay = Math.min(step, 4) * 60 + 'ms';
+                entry.target.classList.add('in');
+                reveal.unobserve(entry.target);
+                step += 1;
+              });
+            },
+            { rootMargin: '0px 0px -10% 0px' },
+          );
+          document.querySelectorAll('[data-reveal]').forEach(function (el) {
+            reveal.observe(el);
+          });
+
+          // Count-up. The real value stays in the HTML; the running number is drawn
+          // over it from data-shown, so print, copy and screen readers get the real one.
+          var figures = Array.prototype.slice.call(document.querySelectorAll('[data-count]'));
+          var strip = document.querySelector('.stats');
+          var show = function (eased) {
+            figures.forEach(function (el) {
+              var n = Math.round(Number(el.dataset.count) * eased);
+              el.setAttribute('data-shown', n.toLocaleString('en-US') + el.dataset.suffix);
+            });
+          };
+          var count = function () {
+            var start = null;
+            var tick = function (now) {
+              if (start === null) start = now;
+              var t = Math.min((now - start) / 900, 1);
+              if (t < 1) {
+                show(1 - Math.pow(1 - t, 3));
+                requestAnimationFrame(tick);
+              } else {
+                figures.forEach(function (el) {
+                  el.removeAttribute('data-shown');
+                });
+              }
+            };
+            requestAnimationFrame(tick);
+          };
+          if (strip && figures.length) {
+            var counter = new IntersectionObserver(
+              function (entries) {
+                if (
+                  entries.some(function (entry) {
+                    return entry.isIntersecting;
+                  })
+                ) {
+                  counter.disconnect();
+                  count();
+                }
+              },
+              { threshold: 0.5 },
+            );
+            counter.observe(strip);
+            show(0);
+          }
+          window.__motion = true;
+        } catch (error) {
+          root.classList.remove('js');
+        }
+      })();
+    </script>
   </body>
 </html>
