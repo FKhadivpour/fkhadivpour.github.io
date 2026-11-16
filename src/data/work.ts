@@ -66,14 +66,14 @@ export const work: WorkItem[] = [
     result:
       'Used daily by analysts and administrators at enterprise clients, managing portfolios of tens of thousands of buildings.',
   },
-  {
-    kicker: 'Multimodal extraction',
-    title: 'Everything arrives in the wrong shape',
-    body: 'A technician photographs a nameplate in bad light; a utility bill turns up as a scan of a table. A single hospital site visit can produce 100+ pieces of equipment with four or five images each. I built OCR and multimodal extraction that turns nameplates, site photos, blueprints, PDFs and spreadsheets into validated structured records. Character recognition is the part that already works; the hard part is judgment, so abstention is a first-class output, and the interface shows a person what was read, what was inferred and what to check first.',
-    resultLabel: 'Result',
-    result:
-      'Field data capture cut from days to under a few hours, at 95%+ accuracy on noisy field imagery.',
-  },
+  // {
+  //   kicker: 'Multimodal extraction',
+  //   title: 'Everything arrives in the wrong shape',
+  //   body: 'A technician photographs a nameplate in bad light; a utility bill turns up as a scan of a table. A single hospital site visit can produce 100+ pieces of equipment with four or five images each. I built OCR and multimodal extraction that turns nameplates, site photos, blueprints, PDFs and spreadsheets into validated structured records. Character recognition is the part that already works; the hard part is judgment, so abstention is a first-class output, and the interface shows a person what was read, what was inferred and what to check first.',
+  //   resultLabel: 'Result',
+  //   result:
+  //     'Field data capture cut from days to under a few hours, at 95%+ accuracy on noisy field imagery.',
+  // },
   {
     kicker: 'Product engineering',
     title: 'CollectFlow, full stack',
