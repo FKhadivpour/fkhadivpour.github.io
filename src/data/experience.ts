@@ -65,17 +65,17 @@ export const experience: Job[] = [
     ],
     stack: ['PyTorch', 'TensorFlow', 'Keras', 'Hugging Face', 'Slurm', 'R'],
   },
-  {
-    env: 'Research lab',
-    role: 'Machine Learning Researcher',
-    company: 'NCBLab',
-    href: links.ncblab,
-    note: 'Neuromuscular Control & Biomechanics Laboratory',
-    location: 'Edmonton, AB',
-    dates: 'Jan 2020 – May 2020',
-    points: [
-      `Delivered a client project for ${a(links.rwdi, 'RWDI')} with a team of 5, two weeks ahead of schedule: automated manual spatial data extraction and trained models reaching 94% accuracy on a key target variable.`,
-    ],
-    stack: ['PyTorch', 'XGBoost', 'scikit-learn', 'Weights & Biases'],
-  },
+  // {
+  //   env: 'Research lab',
+  //   role: 'Machine Learning Researcher',
+  //   company: 'NCBLab',
+  //   href: links.ncblab,
+  //   note: 'Neuromuscular Control & Biomechanics Laboratory',
+  //   location: 'Edmonton, AB',
+  //   dates: 'Jan 2020 – May 2020',
+  //   points: [
+  //     `Delivered a client project for ${a(links.rwdi, 'RWDI')} with a team of 5, two weeks ahead of schedule: automated manual spatial data extraction and trained models reaching 94% accuracy on a key target variable.`,
+  //   ],
+  //   stack: ['PyTorch', 'XGBoost', 'scikit-learn', 'Weights & Biases'],
+  // },
 ];
