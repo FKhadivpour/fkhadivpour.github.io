@@ -12,6 +12,7 @@ export const research: Paper[] = [
     venue: 'University of Alberta',
     year: 2024,
     note: 'M.Sc. thesis',
+    href: 'https://ualberta.scholaris.ca/server/api/core/bitstreams/fef0e66d-0f77-4093-a508-74d6783c7ad7/content',
   },
   {
     title:
